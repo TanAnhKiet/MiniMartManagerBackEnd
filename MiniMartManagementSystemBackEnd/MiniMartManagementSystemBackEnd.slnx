@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="BackEnd.Core/BackEnd.Core.csproj" />
+  <Project Path="BackEnd.Data/BackEnd.Data.csproj" />
+  <Project Path="MiniMartManagementAPI/MiniMartManagementAPI.csproj" />
+</Solution>

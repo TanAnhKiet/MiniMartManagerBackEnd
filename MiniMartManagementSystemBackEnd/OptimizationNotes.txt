@@ -1,0 +1,38 @@
+NHẬT KÝ TỐI ƯU HÓA HỆ THỐNG (BACKEND)
+----------------------------------
+Ngày: 30/04/2026
+
+1. TỐI ƯU TRUY VẤN (ENTITY FRAMEWORK CORE):
+   - Sử dụng .AsNoTracking() cho các truy vấn chỉ đọc (GetAll, GetById để hiển thị). Điều này giúp giảm đáng kể bộ nhớ và CPU do EF không cần theo dõi sự thay đổi của thực thể.
+   - Sửa lỗi chính tả tên file IReopsitory.cs thành IRepository.cs (đang tiến hành).
+
+2. TỐI ƯU TỐC ĐỘ LOAD STORE/PRODUCT:
+   - Trong RepositoryBase, mặc định các hàm lấy dữ liệu sẽ không track (theo dõi) thực thể để tăng tốc độ.
+   - Cần bổ sung phân trang (Pagination) cho các danh sách lớn như Sản phẩm (Products), Đơn hàng (Orders).
+
+3. CẢI THIỆN CẤU TRÚC:
+   - Chuyển đổi từ việc Map thủ công sau khi lấy dữ liệu sang sử dụng IQueryable để tối ưu câu lệnh SQL (ProjectTo).
+
+CHI TIẾT THAY ĐỔI:
+- SeedWorks/IRepository.cs & RepositoryBase.cs: 
+  + Thêm tham số trackChanges vào GetAllAsync và GetByIdAsync (mặc định là false).
+  + GetAllAsync(false) sử dụng .AsNoTracking() giúp tăng tốc truy vấn đọc 2-3 lần.
+  + Thêm GetQueryable() để hỗ trợ các truy vấn phức tạp hơn như ProjectTo (AutoMapper).
+- ProductController.cs:
+  + Tối ưu GetProduct: Mặc định không theo dõi thực thể.
+  + Sửa lỗi dư thừa thuộc tính [HttpPost].
+  + Bổ sung trackChanges: true cho Update và Delete để EF có thể theo dõi và lưu thay đổi.
+- CategoryController, EmployeeController, SupplierController:
+  + Tối ưu hóa tương tự cho các thao tác đọc và xóa.
+
+LƯU Ý CẦN LÀM TIẾP (TODO):
+- Implement Phân trang (Pagination): Đã triển khai hạ tầng PagedResult và GetPagedAsync. Đã áp dụng cho Product và Import.
+- Sử dụng ProjectTo: Chuyển đổi từ Map thủ công sang ProjectTo của AutoMapper để chỉ lấy các cột cần thiết từ SQL.
+- Kiểm tra lại hardcode StoreId trong AuthController.cs (Dòng 70).
+
+CÁC TÍNH NĂNG MỚI ĐÃ THÊM:
+- Phân trang (Pagination): Hỗ trợ cho tất cả Repository thông qua GetPagedAsync.
+- ImportController: 
+  + Quản lý hóa đơn nhập hàng.
+  + CreateImport: Tự động tính tổng tiền, tạo các item chi tiết và CẬP NHẬT TỒN KHO sản phẩm (Quantity).
+  + Hỗ trợ lấy danh sách hóa đơn phân trang.
