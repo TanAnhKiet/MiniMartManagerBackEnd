@@ -158,10 +158,10 @@ VALUES
 -- =================================================================================
 -- 11. BẢNG: StorePaymentAccounts
 -- =================================================================================
-INSERT INTO StorePaymentAccounts (Id, StoreId, Provider, AccountName, MerchantId, PublicKey, SecretKey, IsActive, CreatedAt)
+INSERT INTO StorePaymentAccounts (Id, StoreId, Provider, AccountName, MerchantId, PublicKey, SecretKey, BaseUrl, ReturnUrl, IsActive, CreatedAt)
 VALUES
-('00000000-0000-0000-0000-000000000001', @StoreId, 'VNPay', N'Chut Chut Store VNPay', 'VNPAY_CHUTCHUT', 'vnpay_public_key_mock', 'vnpay_secret_key_mock', 1, GETUTCDATE()),
-('00000000-0000-0000-0000-000000000002', @StoreId, 'MoMo', N'Chut Chut Store MoMo', 'MOMO_CHUTCHUT', 'momo_public_key_mock', 'momo_secret_key_mock', 1, GETUTCDATE()),
-('00000000-0000-0000-0000-000000000003', @StoreId, 'ZaloPay', N'Chut Chut Store ZaloPay', 'ZALO_CHUTCHUT', 'zalo_public_key_mock', 'zalo_secret_key_mock', 0, GETUTCDATE()),
-('00000000-0000-0000-0000-000000000004', @StoreId, 'BankTransfer', N'Chut Chut Store VCB', '999988887777', 'vcb_public_key_mock', 'vcb_secret_key_mock', 1, GETUTCDATE()),
-('00000000-0000-0000-0000-000000000005', @StoreId, 'Stripe', N'Chut Chut Store Stripe', 'STRIPE_CHUTCHUT', 'stripe_public_key_mock', 'stripe_secret_key_mock', 0, GETUTCDATE());
+('00000000-0000-0000-0000-000000000001', @StoreId, 'VNPay', N'Chut Chut Store VNPay', 'TKD12CJH', '', 'RAPEX52LN0Q1L25OV5G9G29KG8B627IF', 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html', 'https://localhost:7289/api/Payment/PaymentCallback', 1, GETUTCDATE()),
+('00000000-0000-0000-0000-000000000002', @StoreId, 'MoMo', N'Chut Chut Store MoMo', 'MOMO_CHUTCHUT', 'momo_public_key_mock', 'momo_secret_key_mock', 'https://test-payment.momo.vn/v2/gateway/api/create', 'https://localhost:7289/api/Payment/MomoCallback', 1, GETUTCDATE()),
+('00000000-0000-0000-0000-000000000003', @StoreId, 'ZaloPay', N'Chut Chut Store ZaloPay', 'ZALO_CHUTCHUT', 'zalo_public_key_mock', 'zalo_secret_key_mock', '', '', 0, GETUTCDATE()),
+('00000000-0000-0000-0000-000000000004', @StoreId, 'BankTransfer', N'Chut Chut Store VCB', '999988887777', 'vcb_public_key_mock', 'vcb_secret_key_mock', '', '', 1, GETUTCDATE()),
+('00000000-0000-0000-0000-000000000005', @StoreId, 'Stripe', N'Chut Chut Store Stripe', 'STRIPE_CHUTCHUT', 'stripe_public_key_mock', 'stripe_secret_key_mock', '', '', 0, GETUTCDATE());
