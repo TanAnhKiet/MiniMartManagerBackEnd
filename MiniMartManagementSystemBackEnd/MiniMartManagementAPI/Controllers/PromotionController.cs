@@ -1,7 +1,7 @@
 using BackEnd.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MiniMartManagementAPI.Service;
+using MiniMartManagementAPI.Service.Promotion;
 
 namespace MiniMartManagementAPI.Controllers
 {

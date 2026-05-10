@@ -5,7 +5,7 @@ using BackEnd.Core.SeedWorks;
 using Microsoft.EntityFrameworkCore;
 using MiniMartManagementAPI.Service.Promotions;
 
-namespace MiniMartManagementAPI.Service
+namespace MiniMartManagementAPI.Service.Promotion
 {
     public class PromotionService : IPromotionService
     {

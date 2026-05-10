@@ -1,7 +1,7 @@
 using BackEnd.Core.Domain.Entities;
 using BackEnd.Core.Models;
 
-namespace MiniMartManagementAPI.Service
+namespace MiniMartManagementAPI.Service.Promotion
 {
     public interface IPromotionService
     {

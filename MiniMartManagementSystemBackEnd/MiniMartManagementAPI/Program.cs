@@ -134,7 +134,12 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<PromotionRequestDTO.MappingProfile>();
 });
 
-builder.Services.AddScoped<IPromotionService, PromotionService>();
+builder.Services.AddScoped<MiniMartManagementAPI.Service.Promotion.IPromotionService, MiniMartManagementAPI.Service.Promotion.PromotionService>();
+builder.Services.AddScoped<MiniMartManagementAPI.Service.POS.IPOSService, MiniMartManagementAPI.Service.POS.POSService>();
+builder.Services.AddScoped<MiniMartManagementAPI.Service.Inventory.IInventoryService, MiniMartManagementAPI.Service.Inventory.InventoryService>();
+builder.Services.AddScoped<MiniMartManagementAPI.Service.Import.IImportService, MiniMartManagementAPI.Service.Import.ImportService>();
+builder.Services.AddScoped<MiniMartManagementAPI.Service.System.ISystemService, MiniMartManagementAPI.Service.System.SystemService>();
+builder.Services.AddScoped<MiniMartManagementAPI.Service.Report.IReportService, MiniMartManagementAPI.Service.Report.ReportService>();
 
 // Đăng ký ITokenService vào DI container
 builder.Services.Configure<JwtTokenSettings>(configuration.GetSection("JwtTokenSettings"));

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,6 +27,12 @@ namespace BackEnd.Core.Domain.Entities
 
         [ForeignKey("SupplierId")]
         public SupplierEntity Supplier { get; set; } = null!;
+
+        [Required]
+        public Guid EmployeeId { get; set; }
+
+        [ForeignKey("EmployeeId")]
+        public EmployeeEntity Employee { get; set; } = null!;
 
         public decimal TotalAmount { get; set; } // Tong tien cua hoa don
 

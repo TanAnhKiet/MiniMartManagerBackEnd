@@ -1,9 +1,6 @@
-using BackEnd.Core.SeedWorks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using OfficeOpenXml;
-using System.Drawing;
+using MiniMartManagementAPI.Service.Report;
 
 namespace MiniMartManagementAPI.Controllers
 {
@@ -12,70 +9,25 @@ namespace MiniMartManagementAPI.Controllers
     [Authorize(Roles = "RootAdmin, Manager")]
     public class ReportController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IReportService _reportService;
 
-        public ReportController(IUnitOfWork unitOfWork)
+        public ReportController(IReportService reportService)
         {
-            _unitOfWork = unitOfWork;
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            _reportService = reportService;
         }
 
         [HttpGet("ExportOrdersToExcel")]
         public async Task<IActionResult> ExportOrdersToExcel([FromQuery] DateTime? fromDate, [FromQuery] DateTime? toDate)
         {
-            var query = _unitOfWork.OrderRepository.GetQueryable()
-                .Include(o => o.Employee)
-                .AsQueryable();
+            var fileBytes = await _reportService.ExportOrdersToExcel(fromDate, toDate);
+            string fileName = $"BaoCaoDoanhThu_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
 
-            if (fromDate.HasValue)
-                query = query.Where(o => o.CreatedAt >= fromDate.Value);
-            if (toDate.HasValue)
-                query = query.Where(o => o.CreatedAt <= toDate.Value);
-
-            var orders = await query.OrderByDescending(o => o.CreatedAt).ToListAsync();
-
-            using (var package = new ExcelPackage())
-            {
-                var worksheet = package.Workbook.Worksheets.Add("Orders Report");
-
-                // Header
-                worksheet.Cells[1, 1].Value = "Mã Hóa Đơn";
-                worksheet.Cells[1, 2].Value = "Ngày Tạo";
-                worksheet.Cells[1, 3].Value = "Nhân Viên";
-                worksheet.Cells[1, 4].Value = "Tổng Tiền";
-                worksheet.Cells[1, 5].Value = "Thành Tiền";
-                worksheet.Cells[1, 6].Value = "Phương Thức";
-                worksheet.Cells[1, 7].Value = "Trạng Thái";
-
-                using (var range = worksheet.Cells[1, 1, 1, 7])
-                {
-                    range.Style.Font.Bold = true;
-                    range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    range.Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
-                }
-
-                // Data
-                for (int i = 0; i < orders.Count; i++)
-                {
-                    var order = orders[i];
-                    worksheet.Cells[i + 2, 1].Value = order.OrderCode;
-                    worksheet.Cells[i + 2, 2].Value = order.CreatedAt.ToString("dd/MM/yyyy HH:mm");
-                    worksheet.Cells[i + 2, 3].Value = order.Employee?.FullName ?? "N/A";
-                    worksheet.Cells[i + 2, 4].Value = order.TotalAmount;
-                    worksheet.Cells[i + 2, 5].Value = order.FinalAmount;
-                    worksheet.Cells[i + 2, 6].Value = order.PaymentMethod;
-                    worksheet.Cells[i + 2, 7].Value = order.Status.ToString();
-                }
-
-                worksheet.Cells.AutoFitColumns();
-
-                var stream = new MemoryStream();
-                package.SaveAs(stream);
-                stream.Position = 0;
-
-                string fileName = $"BaoCaoDoanhThu_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
-                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
-            }
+        [HttpGet("GetRevenueStats")]
+        public async Task<IActionResult> GetRevenueStats([FromQuery] DateTime? fromDate, [FromQuery] DateTime? toDate)
+        {
+            return Ok(await _reportService.GetRevenueStats(fromDate, toDate));
         }
     }
 }
