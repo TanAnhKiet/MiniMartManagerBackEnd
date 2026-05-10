@@ -1,4 +1,4 @@
-﻿using BackEnd.Core.Repositories;
+using BackEnd.Core.Repositories;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BackEnd.Core.SeedWorks
@@ -17,6 +17,7 @@ namespace BackEnd.Core.SeedWorks
         IImportItemRepository ImportItemRepository { get; }
         IOrderItemRepository OrderItemRepository { get; }
         IStorePaymentAccountRepository StorePaymentAccountRepository { get; }
+        IPromotionRepository PromotionRepository { get; }
         Task<int> CompleteAsync();
     }
 }

@@ -8,6 +8,7 @@ using BackEnd.Core.SeedWorks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MiniMartManagementAPI.Controllers
 {
@@ -45,6 +46,16 @@ namespace MiniMartManagementAPI.Controllers
                 PageSize = pagedResult.PageSize
             };
             return Ok(pagedDto);
+        }
+
+        [HttpGet("GetLowStockProducts")]
+        public async Task<IActionResult> GetLowStockProducts()
+        {
+            var productEntities = await _unitOfWork.ProductRepository.GetQueryable()
+                .Where(p => p.Quantity <= p.WarningThreshold)
+                .ToListAsync();
+            var products = _mapper.Map<List<ProductResponseDTO>>(productEntities);
+            return Ok(products);
         }
 
         [HttpPost("CreateProduct")]

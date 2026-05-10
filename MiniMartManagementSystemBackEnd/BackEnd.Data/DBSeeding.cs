@@ -156,6 +156,53 @@ namespace BackEnd.Data
                 }
             }
 
+            // --- 5. SEED PROMOTIONS ---
+            var hasPromotions = await context.Promotions.AnyAsync();
+            if (!hasPromotions && currentStoreId != Guid.Empty)
+            {
+                Console.WriteLine(">>>> [SEEDING] Không thấy khuyến mãi nào, đang tạo mẫu...");
+                
+                // Lấy sản phẩm đầu tiên nếu có
+                var product = await context.Products.FirstOrDefaultAsync();
+                
+                var promotions = new List<PromotionEntity>
+                {
+                    new PromotionEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "Giảm giá khai trương 10%",
+                        Type = PromotionType.PERCENT,
+                        DiscountValue = 10,
+                        Scope = PromotionScope.BAN_HANG,
+                        StartDate = DateTime.UtcNow,
+                        EndDate = DateTime.UtcNow.AddMonths(1),
+                        Status = PromotionStatus.ACTIVE,
+                        StoreId = currentStoreId,
+                        CreatedAt = DateTime.UtcNow,
+                        ProductId = product?.Id // Áp dụng cho sản phẩm đầu tiên hoặc null (toàn bộ)
+                    },
+                    new PromotionEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "Mua 2 tặng 1",
+                        Type = PromotionType.BUY_X_GET_Y,
+                        BuyQuantity = 2,
+                        GetQuantity = 1,
+                        Scope = PromotionScope.BAN_HANG,
+                        StartDate = DateTime.UtcNow,
+                        EndDate = DateTime.UtcNow.AddMonths(1),
+                        Status = PromotionStatus.ACTIVE,
+                        StoreId = currentStoreId,
+                        CreatedAt = DateTime.UtcNow,
+                        ProductId = product?.Id
+                    }
+                };
+                
+                await context.Promotions.AddRangeAsync(promotions);
+                await context.SaveChangesAsync();
+                Console.WriteLine(">>>> [SEEDING] Hoàn tất tạo khuyến mãi mẫu!");
+            }
+
             Console.WriteLine(">>>> [SEEDING] Quá trình Seeding kết thúc thành công.");
         }
     }

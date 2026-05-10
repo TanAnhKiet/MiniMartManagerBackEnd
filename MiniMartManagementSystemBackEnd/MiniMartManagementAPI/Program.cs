@@ -130,7 +130,11 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<StoreResponseDTO.MappingProfile>();
     cfg.AddProfile<StorePaymentAccountResponseDTO.MappingProfile>();
     cfg.AddProfile<SupplierResponseDTO.MappingProfile>();
+    cfg.AddProfile<PromotionDTO.MappingProfile>();
+    cfg.AddProfile<PromotionRequestDTO.MappingProfile>();
 });
+
+builder.Services.AddScoped<IPromotionService, PromotionService>();
 
 // Đăng ký ITokenService vào DI container
 builder.Services.Configure<JwtTokenSettings>(configuration.GetSection("JwtTokenSettings"));

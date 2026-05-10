@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +33,8 @@ namespace BackEnd.Core.Domain.Entities
         public decimal SellPrice { get; set; } // gia ban, có thể null nếu sản phẩm chưa được định giá
 
         public int Quantity { get; set; } // 🔥 tồn kho
+
+        public int WarningThreshold { get; set; } = 10; // Ngưỡng cảnh báo hết hàng
 
         public DateTime? ExpiryDate { get; set; } // optional
 

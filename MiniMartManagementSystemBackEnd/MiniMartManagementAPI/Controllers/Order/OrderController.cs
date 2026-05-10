@@ -22,12 +22,14 @@ namespace MiniMartManagementAPI.Controllers.Order
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IHubContext<InventoryHub> _inventoryHub;
+        private readonly IPromotionService _promotionService;
 
-        public OrderController(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<InventoryHub> inventoryHub)
+        public OrderController(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<InventoryHub> inventoryHub, IPromotionService promotionService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _inventoryHub = inventoryHub;
+            _promotionService = promotionService;
         }
 
         private async Task<string> GenerateOrderCode()

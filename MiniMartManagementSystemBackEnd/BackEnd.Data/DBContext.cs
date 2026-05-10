@@ -24,6 +24,7 @@ namespace BackEnd.Data
         public DbSet<OrderItemEntity> OrderItems { get; set; }
         public DbSet<SupplierEntity> Suppliers { get; set; }
         public DbSet<StorePaymentAccountEntity> StorePaymentAccounts { get; set; }
+        public DbSet<PromotionEntity> Promotions { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

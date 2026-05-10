@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BackEnd.Core.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -23,6 +23,8 @@ namespace BackEnd.Core.Models
         public decimal SellPrice { get; set; }
 
         public int Quantity { get; set; } 
+
+        public int WarningThreshold { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public class MappingProfile : Profile

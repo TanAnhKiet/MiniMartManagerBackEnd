@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
@@ -27,6 +27,7 @@ namespace BackEnd.Data.SeedWorks
             OrderItemRepository = new OrderItemRepository(_context, mapper); 
             ImportItemRepository = new ImportItemRepository(_context, mapper); 
             StorePaymentAccountRepository = new StorePaymentAccountRepository(_context, mapper); 
+            PromotionRepository = new PromotionRepository(_context, mapper);
         }
         public IStoreRepository StoreRepository { get;private set;} // Khai báo một repository cụ thể, ví dụ như StoreRepository, để quản lý các thao tác liên quan đến Store
         public IProductRepository ProductRepository { get; private set; } 
@@ -38,6 +39,7 @@ namespace BackEnd.Data.SeedWorks
         public IImportItemRepository ImportItemRepository { get; private set; }
         public IOrderItemRepository OrderItemRepository { get; private set; } 
         public IStorePaymentAccountRepository StorePaymentAccountRepository { get; private set; }
+        public IPromotionRepository PromotionRepository { get; private set; }
 
         public async Task<IDbContextTransaction> BeginTransactionAsync()
         {

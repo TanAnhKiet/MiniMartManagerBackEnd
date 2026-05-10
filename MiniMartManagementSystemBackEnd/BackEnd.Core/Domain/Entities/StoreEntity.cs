@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +24,8 @@ namespace BackEnd.Core.Domain.Entities
 
         [Required, MaxLength(100)]  
         public string Email { get; set; } = null!;// Email cửa hàng
+
+        public string? LogoUrl { get; set; } // URL hoặc đường dẫn logo cửa hàng
 
         public DateTime CreatedAt { get; set; }// Thời gian tạo cửa hàng
 

@@ -13,6 +13,8 @@ namespace BackEnd.Core.Models.Request
         public Guid CategoryId { get; set; }
         public decimal SellPrice { get; set; }
         public int Quantity { get; set; }
+        public int WarningThreshold { get; set; }
+        public DateTime CreatedAt { get; set; }
         public DateTime? ExpiryDate { get; set; }
 
         public class MappingProfile : Profile

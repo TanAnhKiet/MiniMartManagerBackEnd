@@ -1,0 +1,188 @@
+================================================================
+        HỆ THỐNG QUẢN LÝ BÁN HÀNG SIÊU THỊ MINI
+              (Mini Mart Manager)
+================================================================
+
+----------------------------------------------------------------
+1. SƠ ĐỒ CHỨC NĂNG
+----------------------------------------------------------------
+
+Hệ thống quản lý bán hàng (Mini Mart Manager)
+│
+├── 1. Bán Hàng (POS)
+│   ├── Lập hóa đơn
+│   └── Thanh toán
+│       ├── Tiền mặt
+│       └── Online (VNPay)
+│
+├── 2. Quản Lý Kho Hàng
+│   ├── Cập nhật sản phẩm
+│   ├── Cập nhật danh mục
+│   └── Theo dõi số lượng tồn kho
+│
+├── 3. Nhập Hàng
+│   ├── Quản lý nhà cung cấp
+│   └── Lập phiếu nhập kho
+│
+├── 4. Khuyến Mãi
+│   ├── Xem danh sách khuyến mãi
+│   ├── Thêm khuyến mãi
+│   ├── Cập nhật khuyến mãi
+│   └── Xóa khuyến mãi
+│
+├── 5. Báo Cáo Thống Kê
+│   ├── Báo cáo doanh thu theo ngày/tháng/năm
+│   ├── Thống kê top sản phẩm bán chạy
+│   ├── Xem lịch sử bán hàng
+│   └── Xem lịch sử nhập hàng
+│
+└── 6. Cài Đặt Hệ Thống
+    ├── Cập nhật thông tin cửa hàng
+    ├── Quản lý tài khoản thanh toán điện tử (VNPay)
+    └── Quản lý nhân viên
+        ├── Xem danh sách nhân viên
+        ├── Thêm mới nhân viên
+        ├── Cập nhật nhân viên
+        └── Đổi mật khẩu
+
+
+----------------------------------------------------------------
+2. PHÂN QUYỀN ACTOR
+----------------------------------------------------------------
+
+QUẢN LÝ:
+  - Toàn quyền tất cả chức năng
+  - Xem báo cáo, thống kê
+  - Cài đặt hệ thống
+  - Quản lý nhân viên
+  - Quản lý khuyến mãi
+  - Quản lý kho hàng, nhà cung cấp
+
+NHÂN VIÊN:
+  - Bán hàng (POS)
+  - Lập phiếu nhập kho
+  - Xem tồn kho
+
+
+----------------------------------------------------------------
+3. CÁC CHỨC NĂNG CỤ THỂ TỪNG CỤM
+----------------------------------------------------------------
+
+[1] BÁN HÀNG (POS)
+  - Load danh sách sản phẩm + khuyến mãi 1 lần khi vào màn hình
+  - Quét mã vạch hoặc tìm kiếm sản phẩm theo tên
+  - Tự động tính khuyến mãi tại client (không gọi API)
+  - Hiển thị giá gốc, giảm giá, thành tiền
+  - Lập hóa đơn với thông tin: sản phẩm, số lượng, đơn giá tại thời điểm bán
+  - Thanh toán tiền mặt: lưu hóa đơn + cập nhật tồn kho
+  - Thanh toán online (VNPay):
+      + Lưu hóa đơn trạng thái "đang chờ xử lý"
+      + Gọi VNPay lấy URL thanh toán
+      + Hiển thị mã QR
+      + Nhận callback từ VNPay
+      + Cập nhật trạng thái thành công/thất bại
+  - In hóa đơn qua máy in
+  - Background sync mỗi 30 phút để cập nhật sản phẩm/khuyến mãi mới
+
+[2] QUẢN LÝ KHO HÀNG
+  - Xem danh sách sản phẩm (đầy đủ thông tin)
+  - Thêm/sửa/xóa sản phẩm
+  - Thêm/sửa/xóa danh mục
+  - Theo dõi tồn kho:
+      + Xem toàn bộ danh sách sản phẩm + số lượng
+      + Hiển thị sản phẩm hết hàng
+      + Hiển thị sản phẩm sắp hết (dưới ngưỡng cảnh báo)
+      + Lọc tại client, không gọi API thêm
+
+[3] NHẬP HÀNG
+  - Quản lý nhà cung cấp: thêm/sửa/xóa
+  - Lập phiếu nhập kho:
+      + Chọn nhà cung cấp
+      + Thêm sản phẩm + số lượng + giá nhập
+      + Lưu phiếu nhập + cập nhật tồn kho trong 1 transaction
+  - Xem lịch sử nhập hàng
+
+[4] KHUYẾN MÃI
+  - Xem danh sách khuyến mãi (lọc theo trạng thái, phạm vi)
+  - Thêm khuyến mãi mới (3 loại: %, số tiền, buy_x_get_y)
+  - Cập nhật khuyến mãi
+  - Xóa/vô hiệu hóa khuyến mãi
+  - Áp dụng tự động khi bán hàng hoặc nhập hàng
+
+[5] BÁO CÁO THỐNG KÊ
+  - Báo cáo doanh thu: lọc theo ngày/tháng/năm
+  - Top sản phẩm bán chạy
+  - Lịch sử bán hàng: tìm kiếm theo ngày (gọi API với tham số lọc)
+  - Lịch sử nhập hàng
+  - Xuất báo cáo ra file Excel/PDF (xử lý tại backend)
+
+[6] CÀI ĐẶT HỆ THỐNG
+  - Cập nhật thông tin cửa hàng (tên, địa chỉ, SĐT, logo...)
+  - Quản lý tài khoản VNPay (xem + cập nhật TmnCode, SecretKey, môi trường)
+  - Quản lý nhân viên:
+      + Xem danh sách
+      + Thêm mới
+      + Cập nhật thông tin
+      + Đổi mật khẩu
+      + Phân quyền
+
+
+----------------------------------------------------------------
+4. THIẾT KẾ BẢNG KHUYẾN MÃI
+----------------------------------------------------------------
+
+Bảng: Khuyen_Mai
++------------------+---------------+---------------------------+
+| Cột              | Kiểu dữ liệu  | Ghi chú                   |
++------------------+---------------+---------------------------+
+| id               | int           | PK, auto increment        |
+| ten              | nvarchar(255) | Tên chương trình KM       |
+| loai             | nvarchar(50)  | PERCENT / FIXED /         |
+|                  |               | BUY_X_GET_Y               |
+| gia_tri_giam     | decimal       | Nullable                  |
+|                  |               | % hoặc số tiền giảm       |
+| buy_quantity     | int           | Nullable                  |
+|                  |               | Chỉ dùng khi BUY_X_GET_Y  |
+| get_quantity     | int           | Nullable                  |
+|                  |               | Chỉ dùng khi BUY_X_GET_Y  |
+| id_san_pham      | int           | FK → SanPham              |
+| pham_vi          | nvarchar(50)  | BAN_HANG / NHAP_HANG      |
+| ngay_bat_dau     | datetime      | Ngày bắt đầu áp dụng      |
+| ngay_ket_thuc    | datetime      | Ngày hết hạn              |
+| trang_thai       | nvarchar(50)  | ACTIVE / INACTIVE         |
+| created_by       | int           | FK → NhanVien             |
+| created_at       | datetime      | Ngày tạo                  |
++------------------+---------------+---------------------------+
+
+Logic xử lý theo loại:
+  - PERCENT    : giam = gia_goc x (gia_tri_giam / 100)
+  - FIXED      : giam = gia_tri_giam
+  - BUY_X_GET_Y: tang = floor(so_luong / (buy+get)) x get
+                 giam = tang x don_gia
+
+
+----------------------------------------------------------------
+5. DESIGN PATTERN SỬ DỤNG
+----------------------------------------------------------------
+
+  - Repository Pattern    : tách logic query database
+  - Unit of Work          : quản lý transaction
+  - Dependency Injection  : inject service/repository
+  - DTO Pattern           : không trả Entity trực tiếp ra ngoài
+  - Strategy Pattern      : xử lý từng loại khuyến mãi
+  - Factory Pattern       : tạo Strategy phù hợp theo loại KM
+
+
+----------------------------------------------------------------
+6. KIẾN TRÚC HỆ THỐNG
+----------------------------------------------------------------
+
+  Kiến trúc   : 3-Tier Architecture
+  Giao tiếp   : RESTful API (Client - Server)
+
+  Tầng 1 - Presentation : Web UI (HTML/JS/CSS)
+  Tầng 2 - Business     : Web API (ASP.NET Core)
+                          Controller → Service → Repository
+  Tầng 3 - Data         : Database (SQL Server + EF Core)
+
+================================================================
