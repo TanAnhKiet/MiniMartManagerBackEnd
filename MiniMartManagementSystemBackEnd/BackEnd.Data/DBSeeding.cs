@@ -39,27 +39,40 @@ namespace BackEnd.Data
             }
 
             // --- 2. SEED ROLES ---
-            var adminRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == "RootAdmin");
-            Guid adminRoleId;
+            var managerRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == "Manager");
+            Guid managerRoleId;
 
-            if (adminRole == null)
+            if (managerRole == null)
             {
-                Console.WriteLine(">>>> [SEEDING] Không thấy Role RootAdmin, đang tạo mới...");
+                Console.WriteLine(">>>> [SEEDING] Không thấy Role Manager, đang tạo mới...");
                 var newRole = new AppRole
                 {
                     Id = Guid.NewGuid(),
-                    Name = "RootAdmin",
-                    NormalizedName = "ROOTADMIN",
-                    DisplayName = "Chủ cửa hàng"
+                    Name = "Manager",
+                    NormalizedName = "MANAGER",
+                    DisplayName = "Quản lý"
                 };
                 await context.Roles.AddAsync(newRole);
                 await context.SaveChangesAsync();
-                adminRoleId = newRole.Id;
+                managerRoleId = newRole.Id;
             }
             else
             {
-                adminRoleId = adminRole.Id;
-                Console.WriteLine($">>>> [SEEDING] Đã có Role RootAdmin.");
+                managerRoleId = managerRole.Id;
+                Console.WriteLine($">>>> [SEEDING] Đã có Role Manager.");
+            }
+
+            var staffRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == "Staff");
+            if (staffRole == null)
+            {
+                await context.Roles.AddAsync(new AppRole
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Staff",
+                    NormalizedName = "STAFF",
+                    DisplayName = "Nhân viên"
+                });
+                await context.SaveChangesAsync();
             }
 
             // --- 3. SEED USER & EMPLOYEE ---
@@ -92,7 +105,7 @@ namespace BackEnd.Data
                 await context.UserRoles.AddAsync(new IdentityUserRole<Guid>
                 {
                     UserId = userId,
-                    RoleId = adminRoleId
+                    RoleId = managerRoleId
                 });
 
                 // Tạo Employee liên kết (Kiểm tra thêm lần nữa cho chắc chắn không trùng Employee)

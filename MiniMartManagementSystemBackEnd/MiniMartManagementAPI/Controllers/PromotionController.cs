@@ -7,7 +7,7 @@ namespace MiniMartManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "RootAdmin, Manager")]
+    [Authorize(Roles = "Manager")]
     public class PromotionController : ControllerBase
     {
         private readonly IPromotionService _promotionService;

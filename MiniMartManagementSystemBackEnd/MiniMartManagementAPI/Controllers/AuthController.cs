@@ -133,8 +133,8 @@ namespace MiniMartManagementAPI.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             var permissions = new List<string>();
 
-            // Nếu là Admin thì lấy sạch quyền từ Class Constants
-            if (roles.Contains(Roles.Admin))
+            // Nếu là Manager thì lấy sạch quyền từ Class Constants
+            if (roles.Contains(Roles.Manager))
             {
                 var allPermissions = new List<RoleClaimsDTO>();
                 var types = typeof(Permissions).GetTypeInfo().DeclaredNestedTypes;

@@ -6,7 +6,7 @@ namespace MiniMartManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "RootAdmin, Manager")]
+    [Authorize(Roles = "Manager")]
     public class ReportController : ControllerBase
     {
         private readonly IReportService _reportService;

@@ -27,21 +27,21 @@ namespace MiniMartManagementAPI.Controllers
 
         // --- Nhân viên ---
         [HttpGet("GetAllEmployees")]
-        [Authorize(Roles = "RootAdmin, Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetAllEmployees() => Ok(await _systemService.GetAllEmployees());
 
         [HttpPost("CreateEmployee")]
-        [Authorize(Roles = "RootAdmin, Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> CreateEmployee([FromBody] EmployeeRequestDTO request) 
             => Ok(await _systemService.CreateEmployee(request));
 
         [HttpPut("UpdateEmployee")]
-        [Authorize(Roles = "RootAdmin, Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> UpdateEmployee([FromBody] EmployeeResponseDTO request) 
             => Ok(await _systemService.UpdateEmployee(request));
 
         [HttpDelete("DeleteEmployee/{id}")]
-        [Authorize(Roles = "RootAdmin, Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteEmployee(Guid id)
         {
             var result = await _systemService.DeleteEmployee(id);
@@ -51,21 +51,21 @@ namespace MiniMartManagementAPI.Controllers
 
         // --- Tài khoản thanh toán ---
         [HttpGet("GetPaymentAccounts/{storeId}")]
-        [Authorize(Roles = "RootAdmin, Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetPaymentAccounts(Guid storeId) => Ok(await _systemService.GetPaymentAccountsByStoreId(storeId));
 
         [HttpPost("CreatePaymentAccount")]
-        [Authorize(Roles = "RootAdmin, Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> CreatePaymentAccount([FromBody] StorePaymentAccountRequestDTO request) 
             => Ok(await _systemService.CreatePaymentAccount(request));
 
         [HttpPut("UpdatePaymentAccount")]
-        [Authorize(Roles = "RootAdmin, Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> UpdatePaymentAccount([FromBody] StorePaymentAccountRequestDTO request) 
             => Ok(await _systemService.UpdatePaymentAccount(request));
 
         [HttpDelete("DeletePaymentAccount/{id}")]
-        [Authorize(Roles = "RootAdmin, Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeletePaymentAccount(Guid id)
         {
             var result = await _systemService.DeletePaymentAccount(id);
@@ -75,20 +75,20 @@ namespace MiniMartManagementAPI.Controllers
 
         // --- Vai trò & Quyền hạn ---
         [HttpGet("GetAllRoles")]
-        [Authorize(Roles = "RootAdmin")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetAllRoles() => Ok(await _systemService.GetAllRoles());
 
         [HttpPost("CreateRole")]
-        [Authorize(Roles = "RootAdmin")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> CreateRole([FromBody] string roleName) 
             => Ok(await _systemService.CreateRole(roleName));
 
         [HttpGet("GetPermissions/{roleName}")]
-        [Authorize(Roles = "RootAdmin")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetPermissions(string roleName) => Ok(await _systemService.GetPermissionsOfRole(roleName));
 
         [HttpPost("UpdatePermissions/{roleName}")]
-        [Authorize(Roles = "RootAdmin")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> UpdatePermissions(string roleName, [FromBody] List<string> permissions) 
             => Ok(await _systemService.UpdatePermissionsOfRole(roleName, permissions));
     }
