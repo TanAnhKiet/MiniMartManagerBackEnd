@@ -19,6 +19,10 @@ namespace MiniMartManagementAPI.Controllers
         }
 
         // --- Cửa hàng ---
+        [HttpGet("GetDefaultStore")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetDefaultStore() => Ok(await _systemService.GetDefaultStore());
+
         [HttpGet("GetStoreById/{id}")]
         public async Task<IActionResult> GetStoreById(Guid id) => Ok(await _systemService.GetStoreById(id));
 

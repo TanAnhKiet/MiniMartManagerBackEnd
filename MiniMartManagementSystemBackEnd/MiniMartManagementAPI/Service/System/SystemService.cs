@@ -32,6 +32,13 @@ namespace MiniMartManagementAPI.Service.System
             return _mapper.Map<StoreResponseDTO>(store);
         }
 
+        public async Task<StoreResponseDTO> GetDefaultStore()
+        {
+            var stores = await _unitOfWork.StoreRepository.GetAllAsync();
+            var store = stores.FirstOrDefault();
+            return _mapper.Map<StoreResponseDTO>(store);
+        }
+
         public async Task<StoreResponseDTO> UpdateStore(StoreRequestDTO request)
         {
             if (request.Id == null) return null!;

@@ -7,6 +7,7 @@ namespace MiniMartManagementAPI.Service.System
     {
         // Cửa hàng
         Task<StoreResponseDTO> GetStoreById(Guid id);
+        Task<StoreResponseDTO> GetDefaultStore();
         Task<StoreResponseDTO> UpdateStore(StoreRequestDTO request);
 
         // Nhân viên

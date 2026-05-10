@@ -169,7 +169,40 @@ namespace BackEnd.Data
                 }
             }
 
-            // --- 5. SEED PROMOTIONS ---
+            // --- 5. SEED CATEGORIES & PRODUCTS ---
+            var hasCategories = await context.Categories.AnyAsync();
+            if (!hasCategories)
+            {
+                Console.WriteLine(">>>> [SEEDING] Không thấy danh mục nào, đang tạo mặc định...");
+                var categories = new List<CategoryEntity>
+                {
+                    new CategoryEntity { Id = Guid.NewGuid(), Name = "Sữa & Chế phẩm từ sữa", CreatedAt = DateTime.UtcNow },
+                    new CategoryEntity { Id = Guid.NewGuid(), Name = "Đồ uống & Nước giải khát", CreatedAt = DateTime.UtcNow },
+                    new CategoryEntity { Id = Guid.NewGuid(), Name = "Bánh kẹo", CreatedAt = DateTime.UtcNow },
+                    new CategoryEntity { Id = Guid.NewGuid(), Name = "Chăm sóc cá nhân", CreatedAt = DateTime.UtcNow },
+                    new CategoryEntity { Id = Guid.NewGuid(), Name = "Gia vị & Thực phẩm khô", CreatedAt = DateTime.UtcNow }
+                };
+                await context.Categories.AddRangeAsync(categories);
+                await context.SaveChangesAsync();
+
+                var hasProducts = await context.Products.AnyAsync();
+                if (!hasProducts)
+                {
+                    Console.WriteLine(">>>> [SEEDING] Không thấy sản phẩm nào, đang tạo mẫu...");
+                    var products = new List<ProductEntity>
+                    {
+                        new ProductEntity { Name = "Sữa Tươi Vinamilk 1L", Barcode = "8934563102001", CategoryId = categories[0].Id, SellPrice = 35000, Quantity = 100, WarningThreshold = 10, StoreId = currentStoreId, CreatedAt = DateTime.UtcNow },
+                        new ProductEntity { Name = "Nước Ngọt Coca-Cola 330ml", Barcode = "8934563102002", CategoryId = categories[1].Id, SellPrice = 12000, Quantity = 250, WarningThreshold = 20, StoreId = currentStoreId, CreatedAt = DateTime.UtcNow },
+                        new ProductEntity { Name = "Bánh Quy ChocoPie", Barcode = "8934563102003", CategoryId = categories[2].Id, SellPrice = 55000, Quantity = 80, WarningThreshold = 5, StoreId = currentStoreId, CreatedAt = DateTime.UtcNow },
+                        new ProductEntity { Name = "Dầu Gội Clear Men 170g", Barcode = "8934563102004", CategoryId = categories[3].Id, SellPrice = 62000, Quantity = 45, WarningThreshold = 5, StoreId = currentStoreId, CreatedAt = DateTime.UtcNow },
+                        new ProductEntity { Name = "Dầu Ăn Neptune 1L", Barcode = "8934563102005", CategoryId = categories[4].Id, SellPrice = 48000, Quantity = 120, WarningThreshold = 15, StoreId = currentStoreId, CreatedAt = DateTime.UtcNow }
+                    };
+                    await context.Products.AddRangeAsync(products);
+                    await context.SaveChangesAsync();
+                }
+            }
+
+            // --- 6. SEED PROMOTIONS ---
             var hasPromotions = await context.Promotions.AnyAsync();
             if (!hasPromotions && currentStoreId != Guid.Empty)
             {

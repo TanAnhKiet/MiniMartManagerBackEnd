@@ -25,8 +25,6 @@ namespace BackEnd.Core.Domain.Entities
         [Required, MaxLength(100)]  
         public string Email { get; set; } = null!;// Email cửa hàng
 
-        public string? LogoUrl { get; set; } // URL hoặc đường dẫn logo cửa hàng
-
         public DateTime CreatedAt { get; set; }// Thời gian tạo cửa hàng
 
         public ICollection<EmployeeEntity> Employees { get; set; } = new List<EmployeeEntity>();// Một cửa hàng có thể có nhiều nhân viên
